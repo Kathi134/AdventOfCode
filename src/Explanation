@@ -1,0 +1,31 @@
+jedes Rätsel braucht die Imports java.io.File und java.io.IOException
+
+Jedes Rätsel ist eine Unterklasse zu Puzzle und nach Datum im Format DecIndex benannt -> extends Puzzle
+{
+	long erg1 und long erg2 werden von Puzzle geerbt und sind die speicherorte für die lösung
+
+	public Dec()
+	{
+		jedem Rätsel muss als erstes die Input-Datei als File übergeben werden: "inputs\\<date>"
+		mit prepare() wird ein Scanner erstellt, der die Größe des Inputs in lines und columns auswertet
+		mit readInput("<art>") wird die Datei in ein Feld der <art> gespeichert
+		
+		berechnet mit computeSolution die Antwort und Laufzeit
+		
+		Ausgabe der Roh-Lösung mit printSolution bzw. Zusatzinformationen mit printFormattedSolution
+	}
+	
+	public void solveTask1(){}: Implementation der Lösung
+	public void solveTask2(){}
+	
+	main(): erstellt ein neues Rätselobjekt, das die Lösung produziert
+}
+
+<art> des inputs kann sein: charTable 
+							booleanTable  
+							intList
+							intTable
+							String //nur erste zeile
+						    StringList
+							seperated StringList //wenn datensätze über mehrere zeilen
+							StringTable divBy <arg> //teilt die Spalten je nach <arg>, vor <arg> muss ein Leerzeichen!

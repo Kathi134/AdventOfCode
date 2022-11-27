@@ -1,0 +1,30 @@
+package Raetsel2020.First_Tenth;
+
+import java.io.File;
+import java.io.IOException;
+import Raetsel2020.Puzzle;
+
+public class Decemberth extends Puzzle
+{
+	public static void solveTask1()
+	{
+		
+	}
+	
+	public static void solveTask2()
+	{
+		
+	}
+	
+	public static void main(String[] args) throws IOException
+	{
+		f = new File("src\\Raetsel2020\\inputs\\December" +  + "th_Input");
+		prepare();
+		readInput();
+		
+		solveTask1();
+		solveTask2();
+		System.out.println("Task 1 -- ");
+		System.out.println("Task 2 -- ");
+	}
+}

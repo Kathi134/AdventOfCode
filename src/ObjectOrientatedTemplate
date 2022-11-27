@@ -1,0 +1,33 @@
+package Raetsel2021;
+
+import java.io.File;
+import java.io.IOException;
+
+public class Dec extends Puzzle
+{
+	public Dec() throws IOException
+	{
+		f = new File("src\\Raetsel2021\\inputs\\Dec" + );
+		prepare();
+		readInput();
+		
+		computeSolution(1);
+		computeSolution(2);
+		printSolution();
+	}
+	
+	public void solveTask1()
+	{
+		
+	}
+	
+	public void solveTask2()
+	{
+		
+	}
+	
+	public static void main(String[] args) throws IOException
+	{
+		new Dec();
+	}
+}
