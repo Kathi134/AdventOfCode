@@ -72,6 +72,14 @@ public abstract class Puzzle
 				inputStringList = inputReader.readSeperatedStringList();
 				records = inputReader.records;
 				break;
+			case seperatedStringTable:
+				inputStringTable = inputReader.readSeperatedStringTable();
+				records = inputReader.records;
+				break;
+			case seperatedIntTable: 
+				inputIntTable = inputReader.readSeperatedIntTable();
+				records = inputReader.records;
+				break;
 			case booleanTable:
 				inputBooleanTable = inputReader.readBooleanTable();
 				break;

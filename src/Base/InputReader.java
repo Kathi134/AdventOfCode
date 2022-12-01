@@ -242,6 +242,34 @@ public class InputReader
 	}
 
 	
+	public String[][] readSeperatedStringTable()
+	{
+		String[] tmp = readSeperatedStringList();
+		
+		String[][] table = new String[tmp.length][];
+		
+		for(int i=0; i<tmp.length; i++)
+		{
+			table[i] = tmp[i].split(" ");
+		}
+		
+		return table;
+	}
+	
+	public int[][] readSeperatedIntTable()
+	{
+		String[] tmp = readSeperatedStringList();
+		
+		int[][] table = new int[tmp.length][];
+		
+		for(int i=0; i<tmp.length; i++)
+		{
+			table[i] = splitToIntegerArr(tmp[i], " ");
+		}
+		
+		return table;
+	}
+	
 	public int[] readIntList()
 	{
 		int[] inputIntList = null;
@@ -320,7 +348,7 @@ public class InputReader
 	 * @param divisor: das Trennzeichen
 	 * @return ein IntegerArray aus dem gesplitteten String
 	 */
-	private int[] splitToIntegerArr(String line, String divisor)
+	public static int[] splitToIntegerArr(String line, String divisor)
 	{
 		String[] tmp = line.split(divisor);
 		int[] arr = new int[tmp.length];

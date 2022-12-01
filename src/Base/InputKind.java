@@ -9,5 +9,7 @@ public enum InputKind
 	String, //nur erste zeile
     StringList,
 	seperatedStringList, //wenn datensätze über mehrere zeilen
+	seperatedStringTable,
+	seperatedIntTable,
 	StringTable;
 }
