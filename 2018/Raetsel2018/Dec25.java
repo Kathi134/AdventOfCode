@@ -18,7 +18,8 @@ public class Dec25 extends Puzzle2018
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+		//printSolution();
+		printFormattedSolution("Four-Dimensional Adventure", "Number of Constellations", "");
 	}
 	
 	public void convertToPoints()
@@ -35,13 +36,14 @@ public class Dec25 extends Puzzle2018
 	{
 		convertToPoints();
 		
-		constellations = new ArrayList<>();
+		constellations = new ArrayList<List<Point>>();
 		
 		for(int i=0; i<points.size(); i++)
 		{
 			Point p = points.get(i);
 			
-			boolean firstAdd = true;
+			boolean matchConst = false;
+			List<Point> firstConstellationAdded = null;
 			
 			for(int j=0; j<constellations.size(); j++)
 			{
@@ -50,18 +52,31 @@ public class Dec25 extends Puzzle2018
 				for(int k=0; k<c.size(); k++)
 				{
 					Point s = c.get(k);
-					if(firstAdd) //p is added to the first constellation matched
+					
+					if(p.computeManhattan(s) <= 3)
 					{
-						if(p.computeManhattan(s) <= 3)
+						if(firstConstellationAdded == null)
 						{
 							c.add(p);
+							matchConst = true;
+							firstConstellationAdded = c;
 						}
-					}
-					else //p connects two constellations
-					{
-						
+						else
+						{
+							firstConstellationAdded.addAll(c);
+							constellations.remove(c);
+							matchConst = true; // Angstcode -> müssste immer schon true sein wenn cs gemergt werden
+						}
+						break; //as soon as added to c -> jump to next c
 					}
 				}
+			}
+			
+			if(!matchConst)
+			{
+				List<Point> newConst = new ArrayList<Point>();
+				newConst.add(p);
+				constellations.add(newConst);
 			}
 		}
 		
@@ -75,9 +90,9 @@ public class Dec25 extends Puzzle2018
 		 * 				(if any is connected, add whole collection to constellation)
 		 * 		else:
 		 * 			create new constellation
-		 * 
-		 * 
 		 */
+		
+		erg1 = constellations.size();
 	}
 	
 
@@ -95,11 +110,7 @@ public class Dec25 extends Puzzle2018
 
 class Point
 {
-	int w;
-	int x;
-	int y;
-	int z;
-	int[] coords;
+	int[] coords = new int[4];
 	
 	public Point(int[] coords)
 	{
@@ -118,6 +129,6 @@ class Point
 		{
 			sumMan += Math.abs(this.coords[i] - p.coords[i]);
 		}
-		return sumMan + 1; //count yourself
+		return sumMan; //count yourself
 	}
 }

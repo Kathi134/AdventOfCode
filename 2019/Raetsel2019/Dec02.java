@@ -3,7 +3,6 @@ import Base.InputKind;
 
 public class Dec02 extends Puzzle2019
 {
-	private int cursor = 0;
 	private int[] origin;
 	
 	public Dec02()
@@ -41,7 +40,7 @@ public class Dec02 extends Puzzle2019
 	
 	private void runProgram(int noun, int verb)
 	{
-		cursor = 0;
+		int cursor = 0;
 		inputIntList = clone(origin);
 		
 		inputIntList[1] = noun;
