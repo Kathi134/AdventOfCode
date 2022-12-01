@@ -10,5 +10,6 @@
 	<classpathentry kind="src" path="2021"/>
 	<classpathentry kind="src" path="2022"/>
 	<classpathentry kind="src" path="2019"/>
+	<classpathentry kind="src" path="2018"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
