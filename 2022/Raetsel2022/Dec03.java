@@ -11,7 +11,8 @@ public class Dec03 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("Rucksack Reorganization", "overlapping items", "group badge");
 	}
 
 	@Override
@@ -44,7 +45,6 @@ public class Dec03 extends Puzzle2022
 	
 	public int mapPoints(String commons)
 	{
-//		for(int i=0; )
 		if(commons.length() == 1)
 		{
 			int p = 0;
@@ -53,11 +53,11 @@ public class Dec03 extends Puzzle2022
 			int ascii = (int) c;
 			if(Character.isLowerCase(c))
 			{
-				p = ascii - 96; //(int)'a'-1
+				p = ascii - 'a' + 1; 
 			}
 			if(Character.isUpperCase(c))
 			{
-				p = ascii - 65 + 27; //(int)'A'-1
+				p = ascii - 'A' + 27; 
 			}
 			return p;
 		}
@@ -97,7 +97,7 @@ public class Dec03 extends Puzzle2022
 	
 	public static void main(String[] args)
 	{
-		System.out.println((int)'a' + " " + (int)'A');
+//		System.out.println((int)'a' + " " + (int)'A');
 		new Dec03();
 	}
 }

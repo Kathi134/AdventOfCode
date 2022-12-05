@@ -12,7 +12,8 @@ public class Dec02 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("Rock Paper Scissors", "total score with response", "total score with outcome");
 	}
 //	A X for Rock,
 //	B Y for Paper, and 

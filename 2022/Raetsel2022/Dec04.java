@@ -15,7 +15,7 @@ public class Dec04 extends Puzzle2022
 		computeSolution(2);
 
 //		printSolution();
-		printFormattedSolution("Camp Cleanup", "containings", "overlaps");
+		printFormattedSolution("Camp Cleanup", "task containings", "task overlaps");
 	}
 	
 	public void read() 
