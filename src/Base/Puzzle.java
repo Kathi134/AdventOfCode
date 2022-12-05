@@ -30,6 +30,8 @@ public abstract class Puzzle
 	private String duration2;
 	protected long erg1;
 	protected long erg2;
+	protected String ergStr1 = "";
+	protected String ergStr2 = "";
 
 	// Nützlichkeiten für AoC
 	protected int[] adjacentsParameters;
@@ -193,10 +195,10 @@ public abstract class Puzzle
 	// gibt die rohen antworten aus
 	public void printSolution()
 	{
-		String sol1 = erg1 == 0 ? "" : erg1 + "";
+		String sol1 = erg1 == 0 ? ergStr1 : erg1 + "";
 		System.out.println("Task 1 -- " + sol1);
 
-		String sol2 = erg2 == 0 ? "" : erg2 + "";
+		String sol2 = erg2 == 0 ? ergStr2 : erg2 + "";
 		System.out.println("Task 2 -- " + sol2);
 	}
 
@@ -207,10 +209,10 @@ public abstract class Puzzle
 	{
 		System.out.println("/*\\ " + name + " \\*/");
 
-		System.out.println("Task 1 -- " + t1text + ": " + erg1);
+		System.out.println("Task 1 -- " + t1text + ": " + (erg1 == 0 ? ergStr1 : erg1));
 		System.out.println("       -- duration: " + duration1);
 
-		System.out.println("Task 2 -- " + t2text + ": " + erg2);
+		System.out.println("Task 2 -- " + t2text + ": " + (erg2 == 0 ? ergStr2 : erg2));
 		System.out.println("       -- duration: " + duration2);
 	}
 
