@@ -23,7 +23,8 @@ public class Dec05 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("Supply Stacks", "top crates moved singly", "top crates moved at once");
 	}
 	
 	private void read()
@@ -42,9 +43,12 @@ public class Dec05 extends Puzzle2022
 		try
 		{
 			BufferedReader br = new BufferedReader(new FileReader(new File("2022\\Raetsel2022\\inputs\\Dec5cargo")));
-			for(int i=0; i<8; i++)
+			
+			String line = br.readLine();
+			while(line !=null && !line.isBlank() && line.contains("["))
 			{
-				rows.add(0,br.readLine());
+				rows.add(0,line);
+				line = br.readLine();
 			}
 		}
 		catch(IOException e)
@@ -59,15 +63,21 @@ public class Dec05 extends Puzzle2022
 		
 		for(String s: rows)
 		{
-			for(int i=0; i<s.length(); i++)
+			s = s.replaceAll("    ", " [.]");
+			s = s.replaceAll("\\[", "").replaceAll("\\]", "");
+			String[] tmp = s.split(" ");
+			
+			for(int i=0; i<tmp.length; i++)
 			{
-				char c = s.charAt(i);
-				if(c != ' ')
+				char c = tmp[i].charAt(0);
+				if(c != '.' && c != ' ')
 				{
 					cargo.get(i).push(c);
 				}
 			}
 		}
+		
+//		System.out.println(cargo);
 	}
 	
 	@Override
