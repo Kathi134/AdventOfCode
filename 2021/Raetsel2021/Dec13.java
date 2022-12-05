@@ -24,7 +24,7 @@ public class Dec13 extends Puzzle
 		//printPaper();
 		
 		printFormattedSolution("Transparent Origami", 
-				"number of points after one field", 
+				"number of points after one fold", 
 				"pattern after folding all steps: (see image below)");
 		printPaper();
 	}
