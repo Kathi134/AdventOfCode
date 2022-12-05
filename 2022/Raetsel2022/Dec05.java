@@ -20,19 +20,13 @@ public class Dec05 extends Puzzle2022
 		super(5);
 		readInputDivided(InputKind.StringTable, " ");
 		
-		try
-		{
-			read();
-		}
-		catch(IOException e) {e.printStackTrace();}
-		
 		computeSolution(1);
 		computeSolution(2);
 
 		printSolution();
 	}
 	
-	private void read() throws IOException
+	private void read()
 	{
 		data = new int[lines][3];
 		for(int i=0; i<lines; i++)
@@ -45,11 +39,17 @@ public class Dec05 extends Puzzle2022
 		cargo = new ArrayList<>();
 		
 		List<String> rows = new ArrayList<String>();
-		BufferedReader br = new BufferedReader(new FileReader(new File("2022\\Raetsel" + 2022 +"\\inputs\\Dec" + 5+"cargo")));
-		
-		for(int i=0; i<8; i++)
+		try
 		{
-			rows.add(0,br.readLine());
+			BufferedReader br = new BufferedReader(new FileReader(new File("2022\\Raetsel2022\\inputs\\Dec5cargo")));
+			for(int i=0; i<8; i++)
+			{
+				rows.add(0,br.readLine());
+			}
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
 		}
 		
 		for(int i=0; i<9; i++)
@@ -68,29 +68,27 @@ public class Dec05 extends Puzzle2022
 				}
 			}
 		}
-		System.out.println(cargo);
 	}
 	
 	@Override
 	public void solveTask1()
 	{
+		ergStr1 = executeCrane(1);
+	}
+	
+	public String executeCrane(int task)
+	{
+		data = null;
+		cargo = null;
+		read();
+		
+		
 		for(int i=0; i<data.length; i++)
 		{
-			int from = data[i][1]-1;
-			int to = data[i][2]-1;
-			
-			Stack<Character> tmp = new Stack<>();
-			for(int a=0; a<data[i][0]; a++)
-			{
-//				move(data[i][1]-1, data[i][2]-1);
-
-				tmp.push(cargo.get(from).pop());				
-			}
-			
-			while(!tmp.isEmpty())
-			{
-				cargo.get(to).push(tmp.pop());
-			}
+			if(task == 1)
+				move(i);
+			else if(task == 2)
+				moveAtOnce(i);
 		}
 		
 		String res = "";
@@ -100,25 +98,44 @@ public class Dec05 extends Puzzle2022
 			cargo.get(i).push(c);
 			res+= c;
 		}
-		System.out.println(res);
+		
+		return res;		
 	}
 	
-	public void move(int from, int to)
+	
+	public void move(int i)
 	{
-		char c = cargo.get(from).pop();
-		cargo.get(to).push(c);
+		int from = data[i][1]-1;
+		int to = data[i][2]-1;
+		
+		for(int a=0; a<data[i][0]; a++)
+		{
+			char c = cargo.get(from).pop();
+			cargo.get(to).push(c);	
+		}
 	}
 	
-	public void moveAtOnce(int from, int to)
+	public void moveAtOnce(int i)
 	{
-		char c = cargo.get(from).lastElement();
-		cargo.get(to).push(c);
+		int from = data[i][1]-1;
+		int to = data[i][2]-1;
+		
+		Stack<Character> tmp = new Stack<>();
+		for(int a=0; a<data[i][0]; a++)
+		{
+			tmp.push(cargo.get(from).pop());				
+		}
+		
+		while(!tmp.isEmpty())
+		{
+			cargo.get(to).push(tmp.pop());
+		}
 	}
 	
 	@Override
 	public void solveTask2()
 	{
-
+		ergStr2 = executeCrane(2);
 	}
 	
 	public static void main(String[] args)
