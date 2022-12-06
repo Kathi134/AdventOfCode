@@ -24,25 +24,23 @@ public class Dec06 extends Puzzle2022
 
 	public int solve(int size)
 	{
-		String buffer="";
+		StringBuilder buffer=new StringBuilder(); 
 		int cursor = 0;
 		
-		do
+		while(true)
 		{
 			char next  = inputString.charAt(cursor);
+			int i = buffer.indexOf(next+"");
 			if(buffer.length() == size) 
 			{
 				break;
 			}
-			else if(buffer.contains(next+""))
+			else if(i != -1)
 			{
-				int i = buffer.indexOf(next);
-				buffer = buffer.substring(i+1);
+				buffer = new StringBuilder(buffer.substring(i+1));
 			}
-			buffer += inputString.charAt(cursor++);
-			
+			buffer.append(inputString.charAt(cursor++));
 		}
-		while(true);
 		
 		return cursor;
 	}
