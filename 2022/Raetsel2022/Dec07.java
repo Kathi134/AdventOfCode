@@ -57,7 +57,7 @@ public class Dec07 extends Puzzle2022
 	
 	public void updateMap(int fileSize)
 	{
-		// for each substring on buildpath -> everythoing on the stack
+		// for each substring on buildpath -> everythoing on the stack, add curr dirs size 
 		for(int i=0; i<path.size(); i++)
 		{
 			String k = path.get(i);
