@@ -17,7 +17,8 @@ public class Dec07 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("No Space Left on Device", "direcories smaller than 100000", "smallest directory to be deleted");
 	}
 	
 	Stack<String> path = new Stack<>();
