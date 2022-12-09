@@ -24,7 +24,7 @@ public class Dec09 extends Puzzle2022
 
 	@Override
 	public void solveTask1()
-	{
+	{		
 		for(int i=0; i<lines; i++)
 		{
 			//use normales koordinatensystem (oben mehr)
@@ -55,6 +55,7 @@ public class Dec09 extends Puzzle2022
 		}
 	}
 	
+	
 	public void moveWholeHead(String dir, int range)
 	{
 		for(int i=0; i<range; i++)
@@ -67,7 +68,7 @@ public class Dec09 extends Puzzle2022
 				case "U": head.row++; break;
 				case "D": head.row--; break;
 			}
-			
+
 			for(int t=0; t<tails.length; t++)
 			{
 				Position specHead = (t==0) ? head : tails[t-1];
@@ -90,6 +91,7 @@ public class Dec09 extends Puzzle2022
 			tails[i] = new Position(0, 0);
 		}
 		tailPositions.clear();
+		head = new Position(0, 0);
 		
 		for(int i=0; i<lines; i++)
 		{
