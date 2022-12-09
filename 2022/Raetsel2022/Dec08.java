@@ -38,7 +38,7 @@ public class Dec08 extends Puzzle2022
 		{
 			for (int j=1; j<columns-1; j++)
 			{
-				if(checkLeft(i, j).containsKey(true) || checkRight(i,j).containsKey(true) || checkUp(i,j).containsKey(true) || checkDown(i,j).containsKey(true))
+				if(checkLeft(i, j) || checkRight(i,j) || checkUp(i,j) || checkDown(i,j))
 				{
 					res++;
 				}
@@ -51,84 +51,60 @@ public class Dec08 extends Puzzle2022
 		return res;
 	}
 	
-	public HashMap<Boolean, Integer> checkLeft(int posY, int posX)
+	public boolean checkLeft(int posY, int posX)
 	{
-		int countSteps = 0;
 		int originTree = inputIntTable[posY][posX];
 		for (int col=0; col<posX; col++)
 		{
-			countSteps++;
 			int currTree = inputIntTable[posY][col];
 			if(currTree>=originTree)
 			{
-				HashMap<Boolean, Integer> tmp = new HashMap<>();
-				tmp.put(false, countSteps);
-				return tmp;
+				return false;
 			}
 		}
-		HashMap<Boolean, Integer> tmp = new HashMap<>();
-		tmp.put(true, countSteps);
-		return tmp;
+		return true;
 	}
 	
-	public HashMap<Boolean, Integer> checkRight(int posY, int posX)
+	public boolean checkRight(int posY, int posX)
 	{
-		int countSteps = 0;
 		int originTree = inputIntTable[posY][posX];
 		for (int col=posX+1; col<columns; col++)
 		{
-			countSteps++;
 			int currTree = inputIntTable[posY][col];
 			if(currTree>=originTree)
 			{
-				HashMap<Boolean, Integer> tmp = new HashMap<>();
-				tmp.put(false, countSteps);
-				return tmp;
+				return false;
 			}
 		}
-		HashMap<Boolean, Integer> tmp = new HashMap<>();
-		tmp.put(true, countSteps);
-		return tmp;
+		return true;
 	}
 	
-	public  HashMap<Boolean, Integer> checkUp(int posY, int posX)
+	public boolean checkUp(int posY, int posX)
 	{
-		int countSteps = 0;
 		int originTree = inputIntTable[posY][posX];
 		for (int row=0; row<posY; row++)
 		{
-			countSteps++;
 			int currTree = inputIntTable[row][posX];
 			if(currTree>=originTree)
 			{
-				HashMap<Boolean, Integer> tmp = new HashMap<>();
-				tmp.put(false, countSteps);
-				return tmp;
+				return false;
 			}
 		}
-		HashMap<Boolean, Integer> tmp = new HashMap<>();
-		tmp.put(true, countSteps);
-		return tmp;
+		return true;
 	}
 	
-	public HashMap<Boolean, Integer> checkDown(int posY, int posX)
+	public boolean checkDown(int posY, int posX)
 	{
-		int countSteps = 0;
 		int originTree = inputIntTable[posY][posX];
 		for (int row=posY+1; row<lines; row++)
 		{
-			countSteps++;
 			int currTree = inputIntTable[row][posX];
 			if(currTree>=originTree)
 			{
-				HashMap<Boolean, Integer> tmp = new HashMap<>();
-				tmp.put(false, countSteps);
-				return tmp;
+				return false;
 			}
 		}
-		HashMap<Boolean, Integer> tmp = new HashMap<>();
-		tmp.put(true, countSteps);
-		return tmp;
+		return true;
 	}
 	
 	
