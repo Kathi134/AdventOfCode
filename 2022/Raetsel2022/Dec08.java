@@ -140,21 +140,13 @@ public class Dec08 extends Puzzle2022
 		{
 			for (int j=1; j<columns-1; j++)
 			{
-				Map <Boolean, Integer> ml = checkLeft(i, j);
-				Set<Boolean> key = ml.keySet();
-				int scenicScore = ml.get(key.toArray()[0]);
+				int scenicScore = sightLeft(i, j);
 				
-				Map <Boolean, Integer> mr = checkRight(i, j);
-				key = mr.keySet();
-				scenicScore *= mr.get(key.toArray()[0]);
+				scenicScore *= sightRight(i, j);
 				
-				Map <Boolean, Integer> mu = checkUp(i, j);
-				key = mu.keySet();
-				scenicScore *= mu.get(key.toArray()[0]);
+				scenicScore *= sightUp(i, j);
 				
-				Map <Boolean, Integer> md = checkDown(i, j);
-				key = md.keySet();
-				scenicScore *= md.get(key.toArray()[0]);
+				scenicScore *= sightDown(i, j);
 				
 				if(scenicScore > max)
 					max = scenicScore;
@@ -162,6 +154,78 @@ public class Dec08 extends Puzzle2022
 		}
 		
 		return max;
+	}
+	
+	public int sightLeft(int posY, int posX)
+	{
+		int count = 0;
+		int originTree = inputIntTable[posY][posX];
+		while(posX > 0)
+		{
+			posX--;
+			count++;
+			
+			int currTree = inputIntTable[posY][posX]; 
+			if(currTree >= originTree)
+			{
+				break;
+			}
+		}
+		return count;
+	}
+	
+	public int sightRight(int posY, int posX)
+	{
+		int count = 0;
+		int originTree = inputIntTable[posY][posX];
+		while(posX < columns-1)
+		{
+			posX++;
+			count++;
+			
+			int currTree = inputIntTable[posY][posX]; 
+			if(currTree >= originTree)
+			{
+				break;
+			}
+		}
+		return count;
+	}
+	
+	public int sightUp(int posY, int posX)
+	{
+		int count = 0;
+		int originTree = inputIntTable[posY][posX];
+		while(posY > 0)
+		{
+			posY--;
+			count++;
+			
+			int currTree = inputIntTable[posY][posX]; 
+			if(currTree >= originTree)
+			{
+				break;
+			}
+		}
+		return count;
+	}
+	
+	public int sightDown(int posY, int posX)
+	{
+		int count = 0;
+		int originTree = inputIntTable[posY][posX];
+		while(posY < lines-1)
+		{
+			posY++;
+			count++;
+			
+			int currTree = inputIntTable[posY][posX]; 
+			if(currTree >= originTree)
+			{
+				break;
+			}
+		}
+		return count;
 	}
 	
 	@Override
