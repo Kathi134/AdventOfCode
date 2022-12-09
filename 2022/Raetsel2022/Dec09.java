@@ -45,8 +45,36 @@ public class Dec09 extends Puzzle2022
 				case "U": head.row++; break;
 				case "D": head.row--; break;
 			}
+			
 			tail.moveAdjacent(head);
 			
+			if(!tailPositions.contains(tail))
+			{
+				tailPositions.add(new Position(tail.row, tail.col));
+			}
+		}
+	}
+	
+	public void moveWholeHead(String dir, int range)
+	{
+		for(int i=0; i<range; i++)
+		{
+			//n mal moven
+			switch (dir)
+			{
+				case "R": head.col++; break;
+				case "L": head.col--; break;
+				case "U": head.row++; break;
+				case "D": head.row--; break;
+			}
+			
+			for(int t=0; t<tails.length; t++)
+			{
+				Position specHead = (t==0) ? head : tails[t-1];
+				tails[t].moveAdjacent(specHead);
+			}
+			
+			tail = tails[8];
 			if(!tailPositions.contains(tail))
 			{
 				tailPositions.add(new Position(tail.row, tail.col));
@@ -57,7 +85,18 @@ public class Dec09 extends Puzzle2022
 	@Override
 	public void solveTask2()
 	{
+		for(int i=0; i<tails.length; i++)
+		{
+			tails[i] = new Position(0, 0);
+		}
+		tailPositions.clear();
 		
+		for(int i=0; i<lines; i++)
+		{
+			//use normales koordinatensystem (oben mehr)
+			moveWholeHead(inputStringTable[i][0], Integer.parseInt(inputStringTable[i][1]));
+		}
+		erg2 = tailPositions.size();
 	}
 	
 	public static void main(String[] args)
