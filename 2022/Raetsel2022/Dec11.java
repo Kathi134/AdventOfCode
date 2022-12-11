@@ -1,4 +1,5 @@
 package Raetsel2022;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +12,7 @@ public class Dec11 extends Puzzle2022
 	{
 		super(11);
 		readInput(InputKind.StringList);
-		
+
 		computeSolution(1);
 		computeSolution(2);
 
@@ -19,76 +20,80 @@ public class Dec11 extends Puzzle2022
 	}
 
 	List<Monkey> monkeys = new ArrayList<>();
-	
+
 	public void read()
 	{
 		int j = 0;
-		for(int i=0; i<=7; i++)
+		for (int i = 0; i <= 7; i++)
 		{
 			String currLine = inputStringList[j++];
 			int id = Integer.parseInt(currLine.replace(":", "").split(" ")[1]);
-			
+
 			currLine = inputStringList[j++];
 			String[] tmp = currLine.replace(",", "").trim().split(" ");
-			List<Integer> items = new ArrayList<>();
-			for(int t=2; t<tmp.length; t++)
+			List<Long> items = new ArrayList<>();
+			for (int t = 2; t < tmp.length; t++)
 			{
-				items.add(Integer.parseInt(tmp[t]));
+				items.add(Long.parseLong(tmp[t]));
 			}
-			
-			j++; //skip operation line
-			
+
+			j++; // skip operation line
+
 			currLine = inputStringList[j++];
 			tmp = currLine.split(" ");
-			int divisor = Integer.parseInt(tmp[tmp.length-1]);
-			
+			int divisor = Integer.parseInt(tmp[tmp.length - 1]);
+
 			currLine = inputStringList[j++];
 			tmp = currLine.split(" ");
-			int tmtmp = Integer.parseInt(tmp[tmp.length-1]);
-			
+			int tmtmp = Integer.parseInt(tmp[tmp.length - 1]);
+
 			currLine = inputStringList[j++];
 			tmp = currLine.split(" ");
-			int fmtmp = Integer.parseInt(tmp[tmp.length-1]);
-			
+			int fmtmp = Integer.parseInt(tmp[tmp.length - 1]);
+
 			monkeys.add(new Monkey(id, items, divisor, tmtmp, fmtmp));
-			
-			j++; //skip empty line
+
+			j++; // skip empty line
 		}
-		
-		for(Monkey m: monkeys)
+
+		for (Monkey m : monkeys)
 		{
 			m.setMonkeys(monkeys.get(m.trueMonkeyTmp), monkeys.get(m.falseMonkeyTmp));
 		}
-		
+
 	}
-	
+
 	@Override
 	public void solveTask1()
 	{
 		read();
 
-		for(int round=0; round<20; round++)
+		for (int round = 0; round < 20; round++)
 		{
-			for(Monkey m: monkeys)
+			for (Monkey m : monkeys)
 			{
 				m.executeTurn();
 			}
+			System.err.println(monkeys);
 		}
-		
+
+		System.err.println(monkeys);
 		List<Monkey> tmp = new ArrayList<>(monkeys);
-		Collections.sort(tmp);
 		
-		Monkey mostBusy = tmp.get(tmp.size()-1);
-		Monkey scndBusy = tmp.get(tmp.size()-2);
-		erg1 =  mostBusy.inspections * scndBusy.inspections;
+		Collections.sort(tmp);
+
+		Monkey mostBusy = tmp.get(tmp.size() - 1);
+		Monkey scndBusy = tmp.get(tmp.size() - 2);
+		erg1 = mostBusy.inspections * scndBusy.inspections;
+		System.out.println( mostBusy.inspections + " * " + scndBusy.inspections);
 	}
 
 	@Override
 	public void solveTask2()
 	{
-		
+
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new Dec11();
@@ -98,68 +103,95 @@ public class Dec11 extends Puzzle2022
 class Monkey implements Comparable<Monkey>
 {
 	public int id;
-	public List<Integer> items;
+//	public List<Long> actualItems;
 	public int divisor;
 	public int trueMonkeyTmp;
 	public int falseMonkeyTmp;
 	public Monkey trueMonkey;
 	public Monkey falseMonkey;
-	public int inspections = 0;
-	
-	public Monkey(int id, List<Integer> items, int divisor, int tmtmp, int fmtmp)
+	public long inspections = 0;
+	public List<RestClasses> items; // modulo
+
+	public Monkey(int id, List<Long> items, int divisor, int tmtmp, int fmtmp)
 	{
 		this.id = id;
-		this.items = items;
 		this.divisor = divisor;
 		this.trueMonkeyTmp = tmtmp;
 		this.falseMonkeyTmp = fmtmp;
+
+		this.items = new ArrayList<>();
+		for (long l : items)
+		{
+			this.items.add(new RestClasses(l));
+		}
 	}
-	
+
 	public void setMonkeys(Monkey trueMonkey, Monkey falseMonkey)
 	{
 		this.trueMonkey = trueMonkey;
 		this.falseMonkey = falseMonkey;
 	}
-	
-	public static int operation(int id, int currItem)
-	{		
-		int newItem = 0;
-		switch(id)
+
+	public static void operation(int id, RestClasses currItem)
+	{
+		switch (id)
 		{
-			case 0: newItem = currItem * 11; break;
-			case 1: newItem = currItem + 4; break;
-			case 2: newItem = currItem * currItem; break;
-			case 3: newItem = currItem + 2; break;
-			case 4: newItem = currItem + 3; break;
-			case 5: newItem = currItem + 1; break;
-			case 6: newItem = currItem + 5; break;
-			case 7: newItem = currItem * 19; break;
+			case 0:
+//				newItem = currItem * 11;
+				currItem.addFactor(11);
+				break;
+			case 1:
+//				newItem = currItem + 4;
+				currItem.addition(4);
+				break;
+			case 2:
+//				newItem = currItem * currItem;
+				break;
+			case 3:
+//				newItem = currItem + 2;
+				currItem.addition(2);
+				break;
+			case 4:
+//				newItem = currItem + 3;
+				currItem.addition(3);
+				break;
+			case 5:
+//				newItem = currItem + 1;
+				currItem.addition(1);
+				break;
+			case 6:
+//				newItem = currItem + 5;
+				currItem.addition(5);
+				break;
+			case 7:
+//				newItem = currItem * 19;
+				currItem.addFactor(19);
+				break;
 		}
-		return newItem;
 	}
-	
+
 	public void executeTurn()
 	{
-		while(!items.isEmpty()) 
+		while (!items.isEmpty())
 		{
-			int currItem = items.remove(0);
+			RestClasses currItem = items.remove(0);
 			inspections++;
 			throwItem(currItem);
 		}
 	}
-	
-	public void throwItem(int item)
+
+	public void throwItem(RestClasses item)
 	{
-		item = Monkey.operation(id, item);
-		item /= 3;
-		boolean test = item%divisor == 0;
-		if(test)
+		Monkey.operation(id, item);
+		
+		boolean test = item.isDividable(divisor);
+		if (test)
 			trueMonkey.catchItem(item);
 		else
 			falseMonkey.catchItem(item);
 	}
-	
-	public void catchItem(int item)
+
+	public void catchItem(RestClasses item)
 	{
 		items.add(item);
 	}
@@ -167,9 +199,84 @@ class Monkey implements Comparable<Monkey>
 	@Override
 	public int compareTo(Monkey m)
 	{
-		return inspections - m.inspections;
+		long div = (inspections - m.inspections);
+		return (int) div;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Monkey " + id+ " inspected items " + inspections + " times.\n";
 	}
 }
 
+class RestClasses
+{
+	public final int[] keys = new int[] {2,3,5,7,11,13,17,19};
+	public long[] rests = new long[8];
+	
+	public RestClasses(long l)
+	{
+		for(int i=0; i<keys.length; i++)
+		{
+			rests[i] = l%keys[i];
+		}
+	}
+	
+	public void addFactor(int prime)
+	{
+		for(int i=0; i<keys.length; i++)
+		{
+			if(keys[i] == prime)
+			{
+				rests[i] = 0L;
+			}
+		}
+	}
+
+	public void addition(int summand)
+	{
+		for(int i=0; i<rests.length; i++)
+		{
+			int mod = keys[i];
+			rests[i] = (rests[i] + summand) % mod;
+		}
+	}
+	
+	public boolean isDividable(int d)
+	{
+		for(int i=0; i<keys.length; i++)
+		{
+			if(keys[i] == d)
+			{
+				return rests[i] == 0;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+//	public PrimeFactor(long number)
+//	{
+//		for (int i=2; i<number; i++)
+//		{
+//			while (number%i == 0)
+//			{
+//				factors.add(i);
+//				number = number/i;
+//			}
+//		}
+//		if (number>2)
+//		{
+//			System.out.println(number);
+//		}
+//	}
+//	
+//	public void addFactor(int i)
+//	{
+//		factors.add(i);
+//	}
+}
 
 
