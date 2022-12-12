@@ -1,11 +1,5 @@
 package Raetsel2022;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import Base.InputKind;
 
@@ -21,7 +15,7 @@ public class Dec08 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+		printFormattedSolution("Treetop Tree House", "visible trees", "best tree house scenic score");
 	}
 
 	@Override

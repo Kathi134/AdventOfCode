@@ -1,5 +1,4 @@
 package Raetsel2022;
-import java.util.Arrays;
 
 import Base.InputKind;
 
@@ -13,7 +12,8 @@ public class Dec10 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("Cathode-Ray Tube", "signal strengths", "drawn code");
 	}
 
 	public int x = 1;
@@ -42,7 +42,6 @@ public class Dec10 extends Puzzle2022
 			}
 		}
 		erg1 = res;
-		print();
 	}
 	
 	public void print()
@@ -54,11 +53,11 @@ public class Dec10 extends Puzzle2022
 			{
 				line += g[i][j];
 			}
-			System.out.println(line);
+			System.err.println(line);
 		}
 	}
 	
-	//EHPZRJGI
+	//EHPZPJGL
 	public void draw()
 	{
 		int batch = x%40;
@@ -87,7 +86,8 @@ public class Dec10 extends Puzzle2022
 	@Override
 	public void solveTask2()
 	{
-		
+		print();
+		ergStr2 = "EHPZPJG";
 	}
 	
 	public static void main(String[] args)

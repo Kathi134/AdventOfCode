@@ -15,7 +15,8 @@ public class Dec11 extends Puzzle2022
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("Monkey in the Middle", "monkey business level after 20 rounds", "monkey business level after 10000 rounds");
 	}
 
 	List<Monkey> monkeys;
