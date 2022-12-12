@@ -265,10 +265,11 @@ public abstract class Puzzle
 		return copy;
 	}
 
-	// erwartet eine pos fürs zentrum und die angabe des inputTable-datentyps
-	// gibt ein Feld mit den Parametern zurück: [0: rowAbove][1: rowBelow][2:
-	// columnLeft][3: columnRight]
-	public void getAdjacentParameters(int i, int j, String inputKind)
+	/** erwartet eine pos fürs zentrum und die angabe des inputTable-datentyps
+	 * gibt ein Feld mit den Parametern zurück: [0: rowAbove][1: rowBelow][2:
+	 * columnLeft][3: columnRight]
+	 */
+	public void getAdjacentParameters(int i, int j, InputKind inputKind)
 	{
 		adjacentsParameters = new int[4];
 
@@ -276,35 +277,39 @@ public abstract class Puzzle
 		int rowBelow = i;
 		int columnRight = j;
 		int columnLeft = j;
-
-		if (inputKind.equals("intTable"))
+		
+		int rowLength = -1;
+		int colLength = -1;
+		
+		switch(inputKind)
 		{
-			if (i != 0)
-				rowAbove = i - 1;
-			if (i != inputIntTable.length - 1)
-				rowBelow = i + 1;
-			if (j != 0)
-				columnLeft = j - 1;
-			if (j != inputIntTable[i].length - 1)
-				columnRight = j + 1;
-		} else if (inputKind.equals("charTable"))
-		{
-			if (i != 0)
-				rowAbove = i - 1;
-			if (i != inputCharTable.length - 1)
-				rowBelow = i + 1;
-			if (j != 0)
-				columnLeft = j - 1;
-			if (j != inputCharTable[i].length - 1)
-				columnRight = j + 1;
+			case intTable: 
+				rowLength = inputIntTable.length;
+				colLength = inputIntTable[i].length;
+				break;
+			case charTable:
+				rowLength = inputCharTable.length;
+				colLength = inputCharTable[i].length;
+				break;
+			default:
+				System.err.println("give a Table as inputKind");
 		}
+
+		if (i != 0)
+			rowAbove = i - 1;
+		if (i != rowLength - 1)
+			rowBelow = i + 1;
+		if (j != 0)
+			columnLeft = j - 1;
+		if (j != colLength - 1)
+			columnRight = j + 1;
 
 		int[] parameters = { rowAbove, rowBelow, columnLeft, columnRight };
 		adjacentsParameters = parameters;
 	}
 
 	// speichert in der form y,x
-	public ArrayList<int[]> getDiagonalAdjacents(int i, int j, String inputKind)
+	public ArrayList<Position> getDiagonalAdjacents(int i, int j)
 	{
 		getAdjacentParameters(i, j, inputKind);
 		int a = adjacentsParameters[0];
@@ -312,20 +317,20 @@ public abstract class Puzzle
 		int l = adjacentsParameters[2];
 		int r = adjacentsParameters[3];
 
-		int[][] ad = new int[8][2];
-		ad[0] = new int[] { a, l }; // above left
-		ad[1] = new int[] { a, j }; // above mid
-		ad[2] = new int[] { a, r }; // above right
-		ad[3] = new int[] { i, l }; // mid left
-		ad[4] = new int[] { i, r }; // mid right
-		ad[5] = new int[] { b, l }; // below left
-		ad[6] = new int[] { b, j }; // below mid
-		ad[7] = new int[] { b, r };
+		Position[] ad = new Position[8];
+		ad[0] = new Position(a, l); // above left
+		ad[1] = new Position(a, j); // above mid
+		ad[2] = new Position(a, r); // above right
+		ad[3] = new Position(i, l); // mid left
+		ad[4] = new Position(i, r); // mid right
+		ad[5] = new Position(b, l); // below left
+		ad[6] = new Position(b, j); // below mid
+		ad[7] = new Position(b, r);
 
-		ArrayList<int[]> neighbours = new ArrayList<>();
+		ArrayList<Position> neighbours = new ArrayList<>();
 		for (int cnt = 0; cnt < ad.length; cnt++)
 		{
-			if (ad[cnt][0] != i || ad[cnt][1] != j)
+			if (ad[cnt].row != i || ad[cnt].col != j)
 			{
 				neighbours.add(ad[cnt]);
 			}
@@ -334,20 +339,20 @@ public abstract class Puzzle
 		return neighbours;
 	}
 
-	public ArrayList<int[]> getDirectAdjacents(int i, int j, String inputKind)
+	public ArrayList<Position> getDirectAdjacents(int i, int j)
 	{
 		getAdjacentParameters(i, j, inputKind);
 
-		int[][] ad = new int[4][2];
-		ad[0] = new int[] { adjacentsParameters[0], j }; // above
-		ad[1] = new int[] { i, adjacentsParameters[2] }; // left
-		ad[2] = new int[] { i, adjacentsParameters[3] }; // right
-		ad[3] = new int[] { adjacentsParameters[1], j }; // below
+		Position[] ad = new Position[4];
+		ad[0] = new Position (adjacentsParameters[0], j); // above
+		ad[1] = new Position (i, adjacentsParameters[2]); // left
+		ad[2] = new Position (i, adjacentsParameters[3]); // right
+		ad[3] = new Position (adjacentsParameters[1], j); // below
 
-		ArrayList<int[]> neighbours = new ArrayList<>();
+		ArrayList<Position> neighbours = new ArrayList<>();
 		for (int cnt = 0; cnt < ad.length; cnt++)
 		{
-			if (ad[cnt][0] != i || ad[cnt][1] != j)
+			if (ad[cnt].row != i || ad[cnt].col != j)
 			{
 				neighbours.add(ad[cnt]);
 			}
