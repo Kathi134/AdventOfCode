@@ -2,6 +2,7 @@ package Raetsel2022;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -13,11 +14,13 @@ public class Dec13 extends Puzzle2022
 	{
 		super(13);
 		readInput(InputKind.StringList);
-
+		parse();
+		
 		computeSolution(1);
 		computeSolution(2);
 
-		printSolution();
+//		printSolution();
+		printFormattedSolution("Distress Signal", "sum of correct orders", "decoder key");
 	}
 
 	List<Package> packages = new ArrayList<>();
@@ -98,21 +101,17 @@ public class Dec13 extends Puzzle2022
 	@Override
 	public void solveTask1()
 	{
-		parse();
-		
 		int res = 0;
 		
-		int pairIndex = 1;
 		for(int i=0; i<packages.size(); i+=2)
 		{
 			Package left = packages.get(i);
 			Package right = packages.get(i+1);
 			
-			if(left.isSmallerThan(right))
+			if(left.compareTo(right)<0)
 			{
-				res += pairIndex;
+				res += (i/2 +1); //the pair Index
 			}
-			pairIndex++;
 		}
 		
 		erg1 = res;
@@ -126,43 +125,8 @@ public class Dec13 extends Puzzle2022
 		packages.add(div1);
 		packages.add(div2);
 		
-		List<Package> sorted = bubbleSortPackages(packages);
-		
-		erg2 = (sorted.indexOf(div1)+1)*(sorted.indexOf(div2)+1);
-		
-	}
-	
-	public List<Package> bubbleSortPackages(List<Package> packages)
-	{
-		boolean changed = true;
-		
-		Package[] packs = new Package[packages.size()];
-		for(int i=0; i<packages.size(); i++)
-		{
-			packs[i] = packages.get(i);
-		}
-		
-		for(int i=0; i<packs.length; i++)
-		{
-			if(!changed)
-			{
-				break;
-			}
-			
-			changed = false;
-			for(int j=0; j<packs.length-1; j++)
-			{
-				if(!packs[j].isSmallerThan(packs[j+1]))
-				{
-					Package tmp = packs[j];
-					packs[j] = packs[j+1];
-					packs[j+1] = tmp;
-					changed = true;
-				}
-			}
-		}
-		
-		return Arrays.asList(packs);
+		Collections.sort(packages);
+		erg2 = (packages.indexOf(div1)+1)*(packages.indexOf(div2)+1);
 	}
 
 	public static void main(String[] args)
@@ -170,7 +134,7 @@ public class Dec13 extends Puzzle2022
 		new Dec13();
 	}
 	
-	class Package
+	class Package implements Comparable<Package>
 	{
 		PList content;
 		
@@ -178,52 +142,47 @@ public class Dec13 extends Puzzle2022
 		{
 			this.content = content;
 		}
-
-		public boolean isSmallerThan(Package o)
-		{
-			PList myContent = content;
-			PList othContent = o.content;
-
-			int compIndex = myContent.compareToList(othContent);
-
-			if (compIndex == 0)
-				System.err.println(compIndex);
-			return compIndex < 0;
-		}
 		
 		@Override
 		public String toString()
 		{
 			return content.toString();
 		}
+
+		@Override
+		public int compareTo(Package o)
+		{
+			PList myContent = content;
+			PList othContent = o.content;
+
+			return myContent.compareToList(othContent);
+		}
 	}
 
 	abstract class Content
 	{
-		protected Type type;
-
 		public int compareTo(Content oth)
 		{
 			int resComp;
 
-			if (this.type == oth.type)
+			if (this.getClass() == oth.getClass())
 			{
-				if (this.type == Type.PNumber)
+				if (this.getClass() == PNumber.class)
 				{
 					resComp = ((PNumber) this).compareToNumber((PNumber) oth);
 				} 
-				else // if (this.type == Type.PList)
+				else 
 				{
 					resComp = ((PList) this).compareToList((PList) oth);
 				}
 			} 
 			else
 			{
-				if (this.type == Type.PNumber)
+				if (this.getClass() == PNumber.class)
 				{
 					resComp = ((PNumber) this).convertToPList().compareToList((PList) oth);
 				} 
-				else // if(oth.type == Type.PNumber)
+				else
 				{
 					resComp = ((PList) this).compareToList(((PNumber) oth).convertToPList());
 				}
@@ -235,17 +194,12 @@ public class Dec13 extends Puzzle2022
 
 	class PList extends Content
 	{
-		public PList()
-		{
-			type = Type.PList;
-		}
-
 		ArrayList<Content> contents = new ArrayList<>();
 
 		public int compareToList(PList o)
 		{
 			int comp = 0;
-			for (int i=0; i < contents.size(); i++)
+			for (int i=0; i<contents.size(); i++)
 			{
 				if(i>=o.contents.size()) //other ran out of items
 				{
@@ -278,13 +232,11 @@ public class Dec13 extends Puzzle2022
 
 	class PNumber extends Content
 	{
-
 		int number;
 		
 		public PNumber(int n)
 		{
 			this.number = n;
-			type = Type.PNumber;
 		}
 
 		public int compareToNumber(PNumber o)
