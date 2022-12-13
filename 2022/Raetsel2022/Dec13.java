@@ -1,6 +1,7 @@
 package Raetsel2022;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -24,12 +25,10 @@ public class Dec13 extends Puzzle2022
 	public void parse()
 	{
 		/*
-		 * öffnende Klammer: wirf auf stack
-		 * schließende Klammer: hole letzten Index vom stack
-		 * 		alles dazwischen ist mein Paket-Inhalt
-		 * für ein Paket von a bis b:
-		 * 		erstelle PList
-		 * 		füge alle Elemente von a bis b hinzu
+		 * öffnende Klammer: wirf auf neue PList auf stack
+		 * ziffer: speichere ziffer in Stringbuffer
+		 * komma: parse aktuellen stringbuffer in integer + adde zu oberster PList auf dem Stack
+		 * schließende Klammer: hole letzte PList vom Stack + füge sie dem obersten hinzu
 		 */
 		Stack<Object> subPackages = new Stack<>();
 		
@@ -38,48 +37,61 @@ public class Dec13 extends Puzzle2022
 			String line = inputStringList[i];
 			if (!line.isBlank())
 			{
-				int cursor = 0;
-				while(true)
-				{
-					int opening = line.indexOf("[");
-					int closing = line.indexOf("]");
-				}
+				HashMap<Integer, Integer> map = getBracketPairs(line);
+				
+				PList p = parseList(line); //ohne die äußersten Klammern
+				
 			}
 			
 		}
 			
 	}
 	
-	public void gpt()
+	
+	public PList parseList(HashMap<Integer, Integer> map, String line)
 	{
-		List<Object> result = new ArrayList<>();
+		PList p;
 		
-		if (c == '[') {
-	        // start a new list
-	        result.add(parse(sb.toString()));
-	        sb = new StringBuilder();
-	      } else if (c == ']') {
-	        // end the current list and return it
-	        if (sb.length() > 0) {
-	          result.add(Integer.parseInt(sb.toString()));
-	        }
-	        return result;
-	      } else if (c == ',') {
-	        // add the current number to the list
-	        if (sb.length() > 0) {
-	          result.add(Integer.parseInt(sb.toString()));
-	          sb = new StringBuilder();
-	        }
-	      } else {
-	        // append the current character to the current number
-	        sb.append(c);
-	      }
-	    }
-	    // add the last number, if any
-	    if (sb.length() > 0) {
-	      result.add(Integer.parseInt(sb.toString()));
-	    }
-	    return result;
+		int cursor = 0;
+		
+		if(line.charAt(cursor) == '[')
+		{
+			p = new PList();
+			int closingBracket = map.get(cursor);
+			String newSubline = line.substring(cursor, closingBracket);
+			
+			
+			parseList(newSubline);
+		}
+		
+		while(true)
+		{
+			int opening = line.indexOf("[");
+			int closing = line.indexOf("]");
+		}
+	}
+	
+	public HashMap<Integer, Integer> getBracketPairs(String line)
+	{
+		HashMap<Integer, Integer> res = new HashMap<>();
+		
+		Stack<Integer> bracketIndices = new Stack<>();
+		for(int i=0; i<line.length(); i++)
+		{
+			if(line.charAt(i) == '[')
+			{
+				bracketIndices.push(i);
+			}
+			else if(line.charAt(i) == ']') 
+			{
+				int openingIndex = bracketIndices.pop();
+				if(res.keySet().contains(openingIndex))
+					System.err.println("möp");
+				res.put(openingIndex, i);
+			}
+		}
+		
+		return res;
 	}
 
 	@Override
@@ -149,16 +161,19 @@ abstract class Content
 			if (this.type == Type.PNumber)
 			{
 				resComp = ((PNumber) this).compareToNumber((PNumber) oth);
-			} else // if (this.type == Type.PList)
+			} 
+			else // if (this.type == Type.PList)
 			{
 				resComp = ((PList) this).compareToList((PList) oth);
 			}
-		} else
+		} 
+		else
 		{
 			if (this.type == Type.PNumber)
 			{
 				resComp = ((PNumber) this).convertToPList().compareToList((PList) oth);
-			} else // if(oth.type == Type.PNumber)
+			} 
+			else // if(oth.type == Type.PNumber)
 			{
 				resComp = ((PList) this).compareToList(((PNumber) oth).convertToPList());
 			}
@@ -180,7 +195,8 @@ class PList extends Content
 		if (this.contents.size() != o.contents.size())
 		{
 			comp = this.contents.size() - o.contents.size();
-		} else
+		} 
+		else
 		{
 			for (int i = 0; i < contents.size(); i++)
 			{
