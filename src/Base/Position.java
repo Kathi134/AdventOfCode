@@ -1,6 +1,5 @@
 package Base;
 
-import Raetsel2022.Day14.Point;
 
 public class Position implements Comparable<Position>
 {

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Base.InputKind;
+import Base.InputPrinter;
 import Base.Position;
 
 
@@ -15,9 +16,11 @@ public class Dec14 extends Puzzle2022
 		readInputDivided(InputKind.StringTable, " -> ");
 		
 		computeSolution(1);
+		Base.InputPrinter.printCharTable(cave);
 		computeSolution(2);
+		Base.InputPrinter.printCharTable(cave);
 
-		printSolution();
+		printFormattedSolution("Regolith Reservoir", "falls without infinty", "falls on ground");
 	}
 
 	char[][] cave;
@@ -30,7 +33,6 @@ public class Dec14 extends Puzzle2022
 	
 	public void createCave()
 	{
-
 		for(int i=0; i<inputStringTable.length; i++)
 		{
 			List<Position> currPath = new ArrayList<Position>();
@@ -103,6 +105,71 @@ public class Dec14 extends Puzzle2022
 		}
 	}
 	
+	public void createGorundedCave()
+	{
+		minCol = sand.col - (maxRow+2);
+		maxCol = sand.col + (maxRow+2);
+		maxRow = maxRow+2;
+		
+		sand.col-=minCol;
+		cave = new char[maxRow+1][(maxCol-minCol)+1];
+		// mapping cols: col - minCol
+		for(int i=0; i<cave.length-1; i++)
+		{
+			for(int j=0; j<cave[i].length; j++)
+			{				
+				if(i==sand.row && j==(sand.col))
+				{
+//					cave[i][j] = '+';
+					cave[i][j] = '.';
+				}
+				else
+				{
+					cave[i][j] = '.';					
+				}
+			}
+		}
+		for(int j=0; j<cave[cave.length-1].length; j++)
+		{
+			cave[cave.length-1][j] = '#';
+		}
+
+		
+		for(List<Position> path: pathPoints)
+		{
+			Position init = path.get(0);
+			init.col = init.col - minCol;
+			cave[init.row][init.col] = '#';
+			
+			for(int i=1; i<path.size(); i++)
+			{
+				Position point = path.get(i);
+				point.col = point.col - minCol;
+				
+				if(point.col == init.col) //hoirzontally aligned
+				{
+					int start = Math.min(init.row, point.row);
+					int end = Math.max(init.row, point.row);
+					for(int r=start; r<=end; r++)
+					{
+						cave[r][init.col] = '#';
+					}
+				}
+				else if(point.row == init.row) //vertically aligned
+				{
+					int start = Math.min(init.col, point.col);
+					int end = Math.max(init.col, point.col);
+					for(int c=start; c<=end; c++)
+					{
+						cave[init.row][c] = '#';
+					}
+				}
+				
+				init = point;
+			}
+		}
+	}
+	
 	HashMap<Position,Position> firstBlocks = new HashMap<>();
 	int falls = 0;
 	
@@ -117,7 +184,6 @@ public class Dec14 extends Puzzle2022
 			cont = fallSand();
 		}
 		
-		Base.InputPrinter.printCharTable(cave);
 		erg1 = falls;
 	}
 	
@@ -144,13 +210,21 @@ public class Dec14 extends Puzzle2022
 		}		
 	}
 	
-	public Position getFirstBlock(Position after)
+	public Position getFirstBlock(Position after) 
 	{
-		if(!firstBlocks.containsKey(after)) 
+//		if(!firstBlocks.containsKey(after)) 
 		{
 			int i = after.row;
 			while(cave[i][after.col] == '.')
 			{
+//				cave[i][after.col] = 'o';
+//				InputPrinter.printCharTable(cave);
+//				try
+//				{
+//					Thread.sleep(300);					
+//				}
+//				catch(Exception e) {}
+//				cave[i][after.col] = '.';
 				i++;
 			}		
 			firstBlocks.put(after, new Position(i, after.col));
@@ -196,7 +270,18 @@ public class Dec14 extends Puzzle2022
 	@Override
 	public void solveTask2()
 	{
+		firstBlocks = new HashMap<>();
+		falls = 0;
 		
+		createGorundedCave();
+		
+		boolean cont = true;
+		while(cont)
+		{
+			cont = fallSand();
+		}
+		
+		erg2 = falls;
 	}
 	
 	public static void main(String[] args)
