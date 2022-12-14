@@ -1,5 +1,7 @@
 package Base;
 
+import Raetsel2022.Day14.Point;
+
 public class Position implements Comparable<Position>
 {
 	public int row;
@@ -50,6 +52,7 @@ public class Position implements Comparable<Position>
 			return;
 		}
 	}
+
 	
 	@Override
 	public int compareTo(Position o)
@@ -60,6 +63,9 @@ public class Position implements Comparable<Position>
 	@Override
 	public boolean equals(Object o)
 	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		
 		Position p = (Position) o;
 		boolean rowEqual = (row == p.row);
 		boolean colEqual = (col == p.col);
@@ -69,6 +75,6 @@ public class Position implements Comparable<Position>
 	
 	public String toString()
 	{
-		return "row: " + row + "\tcol: " + col;
+		return "row: " + row + "\tcol: " + col + "\n";
 	}
 }
