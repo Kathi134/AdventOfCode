@@ -51,6 +51,14 @@ public class Position implements Comparable<Position>
 			return;
 		}
 	}
+	
+	public int computeManhattan(Position p)
+	{
+		int sumMan = 0;
+		sumMan += Math.abs(this.row - p.row);
+		sumMan += Math.abs(this.col -p.col);
+		return sumMan; 
+	}
 
 	
 	@Override
