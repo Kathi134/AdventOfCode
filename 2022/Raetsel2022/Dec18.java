@@ -1,5 +1,6 @@
 package Raetsel2022;
 import java.util.ArrayList;
+import java.util.List;
 
 import Base.InputKind;
 
@@ -37,7 +38,51 @@ public class Dec18 extends Puzzle2022
 	@Override
 	public void solveTask2()
 	{
-		
+//		replaceAirPockets();
+		int res = 0;
+		for(Cube c: cubes)
+		{
+			res += c.getEmptySides(cubes);
+		}
+		erg2 = res;
+	}
+	
+	public void replaceAirPockets()
+	{
+		for(int x=0; x<= 25; x++)
+		{
+			for(int y=0; y<= 25; y++)
+			{
+				for(int z=0; z<= 25; z++)
+				{
+					Cube c = new Cube(x, y, z);
+					System.out.println(c);
+					if(cubes.contains(c))
+						continue;
+					
+					boolean isPocket = Cube.isAirPocket(c, cubes);
+					
+					if(isPocket)
+					{
+						List<Cube> queue = new ArrayList<>();
+						queue.add(c);
+						
+						while(queue.size()>0)
+						{
+							Cube pocket = queue.remove(0);
+							if(!cubes.contains(pocket))
+								cubes.add(pocket);
+							
+							for(Cube neighbour: pocket.getRequiredSides())
+							{
+								if(!cubes.contains(neighbour) && !queue.contains(neighbour))
+									queue.add(neighbour);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public static void main(String[] args)
@@ -60,8 +105,11 @@ class Cube
 		this.z=z;
 	}
 	
-	public int getEmptySides(ArrayList<Cube> cubes)
-	{		
+	public Cube[] getRequiredSides()
+	{
+		if(requiredSides[0] != null)
+			return requiredSides;
+			
 		requiredSides[0] = new Cube(x-1,y,z);
 		requiredSides[1] = new Cube(x+1,y,z);
 		requiredSides[2] = new Cube(x,y-1,z);
@@ -69,11 +117,16 @@ class Cube
 		requiredSides[4] = new Cube(x,y,z-1);
 		requiredSides[5] = new Cube(x,y,z+1);
 		
+		return requiredSides;
+	}
+	
+	public int getEmptySides(ArrayList<Cube> cubes)
+	{		
 		int res = 0;
 		
-		for(Cube c: requiredSides)
+		for(Cube c: getRequiredSides())
 		{
-			if(!cubes.contains(c) && !isAirPocket(c, cubes))
+			if(!cubes.contains(c) && isAirPocket(c, cubes))
 			{
 				res++;
 			}
@@ -82,7 +135,7 @@ class Cube
 		return res;
 	}
 	
-	public boolean isAirPocket(Cube c, ArrayList<Cube> cubes)
+	public static boolean isAirPocket(Cube c, ArrayList<Cube> cubes)
 	{
 		boolean[] sides = new boolean[6];
 		
@@ -118,9 +171,10 @@ class Cube
 		
 		for(boolean s: sides)
 		{
-			if(s==false)
+			if(!s)
 				return s;
 		}
+		System.out.println(c);
 		return true;
 	}
 	
@@ -129,6 +183,12 @@ class Cube
 	{
 		Cube c = (Cube) obj;
 		return c.x == x && c.y==y && c.z == z;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "(" + x + "," + y +"," + z + ")";
 	}
 }
 
