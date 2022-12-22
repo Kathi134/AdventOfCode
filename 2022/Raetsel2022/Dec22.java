@@ -21,6 +21,8 @@ public class Dec22 extends Puzzle2022
 		printSolution();
 	}
 	
+	//!42528, !86368
+	
 	public void read()
 	{
 		try
@@ -50,9 +52,12 @@ public class Dec22 extends Puzzle2022
 			while(true)
 			{
 				if(lastFree == inputCharTable[i].length-1)
-					break;
-				if(inputCharTable[i][lastFree] == ' ')
 				{
+					break;
+				}
+				if(inputCharTable[i][lastFree] != '#' && inputCharTable[i][lastFree] != '.')
+				{
+					lastFree--;
 					break;
 				}
 				lastFree++;
@@ -61,7 +66,6 @@ public class Dec22 extends Puzzle2022
 		}
 		
 //		columns = 16;
-		
 		verticalBounds = new int[columns][];
 		for(int i=0; i<columns; i++)
 		{
@@ -79,9 +83,12 @@ public class Dec22 extends Puzzle2022
 			while(true)
 			{
 				if(lastFree == inputCharTable.length-1)
-					break;
-				if(inputCharTable[lastFree][i] == ' ')
 				{
+					break;
+				}
+				if(inputCharTable[lastFree][i] != '#' && inputCharTable[lastFree][i] != '.')
+				{
+					lastFree--;
 					break;
 				}
 				lastFree++;
@@ -102,7 +109,7 @@ public class Dec22 extends Puzzle2022
 		char facing = 'R';
 
 		String buffer = "";
-		for(int i=0; i< inputString.length(); i++)
+		for(int i=0; i<inputString.length(); i++)
 		{
 			char curr = inputString.charAt(i);
 			if(Character.isDigit(curr))
@@ -113,6 +120,7 @@ public class Dec22 extends Puzzle2022
 			{
 				int number = Integer.parseInt(buffer);
 				buffer = "";
+				System.err.println(number+""+facing);
 				
 				for(int step=0; step<number; step++)
 				{
@@ -123,93 +131,125 @@ public class Dec22 extends Puzzle2022
 							int col = horizontalBounds[pos.row][0];
 							if(inputCharTable[pos.row][col] != '#')
 							{
-								pos.col = col;
 								inputCharTable[pos.row][pos.col] = '>';
+								pos.col = col;
+								continue;
 							}
-							continue;
+							else
+							{
+								break;
+							}
 						}
 						
 						char dest = inputCharTable[pos.row][pos.col+1];
-						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+//						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+						if(dest != '#')
 						{
-							pos.col++;
 							inputCharTable[pos.row][pos.col] = '>';
+							pos.col++;
 						}
 						else if(dest == '#')
+						{
+							inputCharTable[pos.row][pos.col] = '>';
 							break;
+						}
 					}
 					if(facing == 'L')
 					{
-						if(pos.col-1 == -1 || pos.col+1 < horizontalBounds[pos.row][0])
+						if(pos.col-1 == -1 || pos.col-1 < horizontalBounds[pos.row][0])
 						{
 							int col = horizontalBounds[pos.row][1];
 							if(inputCharTable[pos.row][col] != '#')
 							{
-								pos.col = col;
 								inputCharTable[pos.row][pos.col] = '<';
+								pos.col = col;
+								continue;
 							}
-							continue;
+							else
+							{
+								break;
+							}
 						}
 						
 						char dest = inputCharTable[pos.row][pos.col-1];
-						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+//						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+						if(dest != '#')
 						{
-							pos.col--;
 							inputCharTable[pos.row][pos.col] = '<';
+							pos.col--;
 						}
 						else if(dest == '#')
+						{
+							inputCharTable[pos.row][pos.col] = '<';
 							break;
+						}
 					}
 					if(facing == 'U')
 					{
-						if(pos.row-1 == -1 || pos.row-1 < verticalBounds[pos.col][1])
+						if(pos.row-1 == -1 || pos.row-1 < verticalBounds[pos.col][0])
 						{
 							int row = verticalBounds[pos.col][1];
 							if(inputCharTable[row][pos.col] != '#')
 							{
-								pos.row = row;
 								inputCharTable[pos.row][pos.col] = '^';
+								pos.row = row;
+								continue;
 							}
-							continue;
+							else
+							{
+								break;
+							}
 						}
 						
 						char dest = inputCharTable[pos.row-1][pos.col];
-						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+//						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+						if(dest != '#')
 						{
-							pos.row--;
 							inputCharTable[pos.row][pos.col] = '^';
+							pos.row--;
 						}
 						else if(dest == '#')
+						{
+							inputCharTable[pos.row][pos.col] = '^';
 							break;
+						}
 					}
 					if(facing == 'D')
 					{
-						if(pos.row+1 == inputCharTable.length || pos.row+1 < verticalBounds[pos.col][0])
+						if(pos.row+1 == inputCharTable.length || pos.row+1 > verticalBounds[pos.col][1])
 						{
 							int row = verticalBounds[pos.col][0];
 							if(inputCharTable[row][pos.col] != '#')
 							{
-								pos.row = row;
 								inputCharTable[pos.row][pos.col] = 'v';
+								pos.row = row;
+								continue;
 							}
-							continue;
+							else
+							{
+								break;
+							}
 						}
 						
 						char dest = inputCharTable[pos.row+1][pos.col];
-						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+//						if(dest == '.' || dest == '>' || dest == '<' || dest =='^' || dest == 'v')
+						if(dest != '#')
 						{
-							pos.row++;
 							inputCharTable[pos.row][pos.col] = 'v';
+							pos.row++;
 						}
 						else if(dest == '#')
+						{	
+							inputCharTable[pos.row][pos.col] = 'v';
 							break;
+						}
 					}
 				}
 				
 				facing = updateFacing(facing, curr=='R');
 				
-				printInput();
-				System.err.println();
+//				printInput();
+//				System.err.println();
 			}
 		}
 		

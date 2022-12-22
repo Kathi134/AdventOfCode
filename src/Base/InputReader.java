@@ -293,9 +293,9 @@ public class InputReader
 	
 	public char[][] readCharTable()
 	{
-		columns = 16;
 		char[][] inputCharTable = null;
 		
+//		columns = 16;
 		try
 		{
 			inputCharTable = new char[lines][columns];
@@ -304,7 +304,12 @@ public class InputReader
 				String line = br.readLine();
 				for (int c = 0; c < line.length(); c++)
 				{
-					inputCharTable[l][c] = line.charAt(c);
+					char curr = ' ';
+					if(c < line.length())
+					{
+						curr = line.charAt(c);
+					}
+					inputCharTable[l][c] = curr;
 				}
 			}
 		}
