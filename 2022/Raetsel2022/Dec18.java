@@ -4,6 +4,8 @@ import java.util.List;
 
 import Base.InputKind;
 
+//try filling each airpocket by adding the needed cube, then get surface again
+
 public class Dec18 extends Puzzle2022
 {
 	public Dec18()
