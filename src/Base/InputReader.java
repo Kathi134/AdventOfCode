@@ -293,6 +293,7 @@ public class InputReader
 	
 	public char[][] readCharTable()
 	{
+		columns = 16;
 		char[][] inputCharTable = null;
 		
 		try
@@ -301,7 +302,7 @@ public class InputReader
 			for (int l = 0; l < lines; l++)
 			{
 				String line = br.readLine();
-				for (int c = 0; c < columns; c++)
+				for (int c = 0; c < line.length(); c++)
 				{
 					inputCharTable[l][c] = line.charAt(c);
 				}
